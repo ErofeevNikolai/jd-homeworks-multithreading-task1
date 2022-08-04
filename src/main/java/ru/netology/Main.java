@@ -2,7 +2,7 @@ package ru.netology;
 
 import java.util.*;
 
-public class Main {
+public class Main {// ветка
 
     public static void main(String[] args) throws InterruptedException {
         String[] texts = new String[25];
