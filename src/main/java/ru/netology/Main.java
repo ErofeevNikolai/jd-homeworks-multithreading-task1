@@ -1,5 +1,6 @@
 package ru.netology;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -18,7 +19,7 @@ public class Main {
         List<Future> threads = new ArrayList<>();
 
         for (String text : texts) {
-            Callable<String> callable = () -> {
+            Callable<Integer> callable = () -> {
                 int maxSize = 0;
                 for (int i = 0; i < text.length(); i++) {
                     for (int j = 0; j < text.length(); j++) {
@@ -37,21 +38,24 @@ public class Main {
                         }
                     }
                 }
-                return text.substring(0, 100) + " -> " + maxSize;
+                return maxSize;
             };
             //Отправлем в пул потока задучу callable на сиполнение
             threads.add(threadPool.submit(callable));
         }
         long startTs = System.currentTimeMillis(); // start time
 
+        int a = 0;
         for (Future thread : threads) {
-            System.out.println(thread.get());
+            int b = (Integer) thread.get();
+            if (a < b) {
+                a = b;
+            }
         }
-        //  Закрываем пул потоков.
+        System.out.println(a);
         threadPool.shutdown();
 
         long endTs = System.currentTimeMillis(); // end time
-
 
         System.out.println("Time: " + (endTs - startTs) + "ms");
     }
